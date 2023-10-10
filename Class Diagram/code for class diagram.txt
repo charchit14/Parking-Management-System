@@ -1,0 +1,23 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table vehicle {
+  id integer [primary key]
+  vehicle_type varchar
+  vehicle_number integer
+  person_id integer [ref: > person.id]
+
+}
+
+Table person {
+  id integer [primary key]
+  person_name varchar
+  visitor_type varchar
+  }
+
+Table duration {
+  id integer [primary key]
+  stay_duration varchar
+  person_id integer [ref: > person.id]
+  vehicle_id integer [ref: > vehicle.id]
+}

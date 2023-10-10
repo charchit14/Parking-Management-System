@@ -1,0 +1,26 @@
+Parking Management System
+
+
+Step 1:
+Admin enters email and password to login into the system
+If the credentials match, admin is redirected to the system dashboard 
+
+Step 2:
+Admin has four options in dash-board
+-Create entry -Read entries -Update entries -Delete entries
+
+Step 3:
+For Reading, all the data on database can be seen 
+For Deleting, admin can delete entry based on person_id which will be entered during creation of entry
+For Updating, admin can update entries based on person_id 
+
+For creating an entry, admin has to enter the following data:
+- Full Name
+- Visitor type: Office Employee, Non-Employee
+- Vehicle type: two-wheeler, four-wheeler
+- Duration: Short, Long
+- Vehicle Number 
+
+* Parking cost: Rs.20/hr for two wheeler and Rs.40/hr for four-wheeler
+* Separate parking space for short-duration
+
