@@ -1,6 +1,6 @@
 from models import Base
 from schema import type_def
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
 from ariadne import ObjectType, make_executable_schema
 from models import Person as PersonModel, Vehicle as VehicleModel, Duration as DurationModel
 from sqlalchemy.orm import sessionmaker
@@ -9,8 +9,13 @@ from ariadne.asgi import GraphQL
 
 from fastapi.staticfiles import StaticFiles
 
+from fastapi import Form, HTTPException
+
 query = ObjectType("Query")
 mutate = ObjectType("Mutation")
+
+# Mounting Ariadne GraphQL as sub-application for Starlette
+app = FastAPI(debug=True)
 
 DATABASE_URL = "postgresql://postgres:pass123@localhost/parking_management_system"
 engine = create_engine(DATABASE_URL)
@@ -149,11 +154,51 @@ def resolve_deletePerson(*_, id):
         return person
 
 
+# Defining route to handle form submission
+@app.post("/submit-entry")
+async def submit_entry(
+        full_name: str = Form(...),
+        visitor_type: str = Form(...),
+        vehicle_type: str = Form(...),
+        stay_duration: str = Form(...),
+        vehicle_number: str = Form(...)
+):
+    # Check if a vehicle with the same number already exists
+    existing_vehicle = session.query(VehicleModel).filter_by(vehicle_number=vehicle_number).first()
+
+    if existing_vehicle:
+        # If the vehicle exists, return an error message
+        raise HTTPException(status_code=400, detail="Vehicle with this number already exists")
+
+    # Creating and inserting data into the database
+    new_person = PersonModel(person_name=full_name, visitor_type=visitor_type)
+    session.add(new_person)
+    session.commit()
+
+    # Get the ID of the newly created person
+    person_id = new_person.id
+
+    # Create a new vehicle
+    new_vehicle = VehicleModel(vehicle_type=vehicle_type, vehicle_number=vehicle_number, person_id=person_id)
+    session.add(new_vehicle)
+    session.commit()
+
+    # Get the ID of the newly created vehicle
+    vehicle_id = new_vehicle.id
+
+    # Create the duration record with both person_id and vehicle_id
+    new_duration = DurationModel(stay_duration=stay_duration, person_id=person_id, vehicle_id=vehicle_id)
+    session.add(new_duration)
+
+    # Commit the duration record to the database
+    session.commit()
+
+    return {"message": "Successfully added an entry"}
+
+
+
 # Create executable schema instance
 schema = make_executable_schema(type_def, query, mutate)
-
-# Mounting Ariadne GraphQL as sub-application for Starlette
-app = FastAPI(debug=True)
 
 app.mount("/graphql/", GraphQL(schema, debug=True))
 

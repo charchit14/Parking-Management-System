@@ -1,110 +1,118 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Add Entries</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  </head>
-  <body>
-    <br>
-    <h1><center><b>Welcome To The Parking Management System</b></center></h1>
-    <br>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+</head>
+<body>
+<br>
+<h1><center><b>Welcome To The Parking Management System</b></center></h1>
+<br>
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand"><b>Admin Dashboard</b></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand"><b>Admin Dashboard</b></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="homepage.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="system.html">System</a>
-              </li>
+                    <a class="nav-link active" aria-current="page" href="homepage.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="system.html">System</a>
+                </li>
             </ul>
-          </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <br>
-    <br>
-    <h3><center>Add an entry below</center></h3>
-    <br>
-    <br>
+<br>
+<br>
+<h3><center>Add an entry below</center></h3>
+<br>
+<br>
 
-    <div class="container">
-      <form>
+<div class="container">
+    <form action="/submit-entry" method="post">
         <div class="mb-3">
-          <label for="fullName" class="form-label"><b>Full Name</b></label>
-          <input type="text" class="form-control" id="fullName" placeholder="Enter Full Name">
+            <label for="fullName" class="form-label"><b>Full Name</b></label>
+            <input type="text" class="form-control" id="fullName" name="full_name" placeholder="Enter Full Name">
         </div>
 
         <br>
         <br>
 
         <div><b>Visitor Type</b>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="VisitorType" id="Office Employee">
-          <label class="form-check-label" for="Office Employee">
-            Office Employee
-          </label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="visitor_type" id="OfficeEmployee" value="Office Employee">
+                <label class="form-check-label" for="OfficeEmployee">
+                    Office Employee
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="visitor_type" id="NonEmployee" value="Non-Employee" checked>
+                <label class="form-check-label" for="NonEmployee">
+                    Non-Employee
+                </label>
+            </div>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="VisitorType" id="Non-Employee" checked>
-          <label class="form-check-label" for="Non-Employee">
-            Non-Employee
-          </label>
-        </div>
-        </div>
-        
+
         <br>
         <br>
 
         <div class="mb-3">
-          <label for="vehicleType" class="form-label"><b>Vehicle Type</b></label>
-          <select class="form-select" id="vehicleType">
-            <option selected disabled>Select the Type of Vehicle</option>
-            <option value="FourWheeler">Four-Wheeler</option>
-            <option value="TwoWheeler">Two-Wheeler</option>
-          </select>
+            <label for="vehicleType" class="form-label"><b>Vehicle Type</b></label>
+            <select class="form-select" id="vehicleType" name="vehicle_type">
+                <option selected disabled>Select the Type of Vehicle</option>
+                <option value="FourWheeler">Four-Wheeler</option>
+                <option value="TwoWheeler">Two-Wheeler</option>
+            </select>
         </div>
 
         <br>
         <br>
-        
+
         <div><b>Duration of Stay</b>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="Duration" id="Short Duration">
-          <label class="form-check-label" for="Short Duration">
-            Short Duration
-          </label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="stay_duration" id="ShortDuration" value="Short Duration">
+                <label class="form-check-label" for="ShortDuration">
+                    Short Duration
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="stay_duration" id="LongDuration" value="Long Duration" checked>
+                <label class="form-check-label" for="LongDuration">
+                    Long Duration
+                </label>
+            </div>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="Duration" id="Long Duration" checked>
-          <label class="form-check-label" for="Long Duration">
-            Long Duration
-          </label>
-        </div>
-        </div>
-        
+
         <br>
         <br>
 
         <div class="mb-3">
-          <label for="vehicleNumber" class="form-label"><b>Vehicle Number</b></label>
-          <input type="text" class="form-control" id="vehicleNumber" placeholder="Enter Vehicle Number Plate">
+            <label for="vehicleNumber" class="form-label"><b>Vehicle Number</b></label>
+            <input type="text" class="form-control" id="vehicleNumber" name="vehicle_number"
+                   placeholder="Enter Vehicle Number Plate">
         </div>
 
         <br>
 
         <button type="submit" class="btn btn-primary">Add Entry</button>
-      </form>
-    </div>
+    </form>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  </body>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
 </html>
