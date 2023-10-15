@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="homepage.html">Home</a>
+                    <a class="nav-link active" aria-current="page" href="read.html">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="system.html">System</a>
@@ -29,17 +29,33 @@
         </div>
     </div>
 </nav>
+<br>
+<br>
 
 
+<!-- Displaying the data in a table -->
+<div class="container">
+    <h2><center>Vehicle Database</center></h2>
+    <br>
+    <br>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Vehicle Type</th>
+                <th>Vehicle Number</th>
+                <th>Person ID</th>
+            </tr>
+        </thead>
+        <tbody id="data-table-body">
+        </tbody>
+    </table>
+</div>
 
-
-<!-- Displaying the data here -->
-        <div id="data-container"></div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 <script>
-    // Function to fetch data from the GraphQL endpoint
+    // Function to fetch data from the GraphQL endpoint and populate the table
     async function fetchData() {
         try {
             const response = await fetch('/graphql/', {
@@ -65,18 +81,19 @@
             const data = await response.json();
             const { data: { getAllVehicles } } = data;
 
-            // Populate the data-container with the retrieved data
-            const container = document.getElementById('data-container');
+            // Populate the table with the retrieved data
+            const tableBody = document.getElementById('data-table-body');
 
-            // Displaying the list of vehicles
-            const vehiclesList = document.createElement('ul');
             getAllVehicles.forEach(vehicle => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `ID: ${vehicle.id}, Vehicle Type: ${vehicle.vehicle_type}, Vehicle Number: ${vehicle.vehicle_number}, Person ID: ${vehicle.person_id}`;
-                vehiclesList.appendChild(listItem);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${vehicle.id}</td>
+                    <td>${vehicle.vehicle_type}</td>
+                    <td>${vehicle.vehicle_number}</td>
+                    <td>${vehicle.person_id}</td>
+                `;
+                tableBody.appendChild(row);
             });
-            container.appendChild(vehiclesList);
-
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -85,7 +102,6 @@
     // Call the fetchData function when the page loads
     window.onload = fetchData;
 </script>
-
 
 
 

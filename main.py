@@ -1,15 +1,13 @@
 from models import Base
 from schema import type_def
-from fastapi import FastAPI, Form
+from fastapi import FastAPI, Form, HTTPException, Query, Request
 from ariadne import ObjectType, make_executable_schema
 from models import Person as PersonModel, Vehicle as VehicleModel, Duration as DurationModel
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from ariadne.asgi import GraphQL
-
 from fastapi.staticfiles import StaticFiles
 
-from fastapi import Form, HTTPException
 
 query = ObjectType("Query")
 mutate = ObjectType("Mutation")
@@ -168,7 +166,7 @@ async def submit_entry(
 
     if existing_vehicle:
         # If the vehicle exists, return an error message
-        raise HTTPException(status_code=400, detail="Vehicle with this number already exists")
+        raise HTTPException(status_code=400, detail="Can't create an entry. Vehicle with this number already exists.")
 
     # Creating and inserting data into the database
     new_person = PersonModel(person_name=full_name, visitor_type=visitor_type)
@@ -195,6 +193,35 @@ async def submit_entry(
 
     return {"message": "Successfully added an entry"}
 
+
+@app.get("/search-person")
+async def search_person(person_id: int = Query(...)):
+    # Query the person by ID
+    person = session.query(PersonModel).filter_by(id=person_id).first()
+
+    if person:
+        # Query the related vehicle by person_id
+        vehicle = session.query(VehicleModel).filter_by(person_id=person_id).first()
+
+        # Query the related duration by person_id
+        duration = session.query(DurationModel).filter_by(person_id=person_id).first()
+
+        if vehicle and duration:
+            # Return the data as JSON
+            return {
+                "person_id": person.id,
+                "person_name": person.person_name,
+                "visitor_type": person.visitor_type,
+                "vehicle_id": vehicle.id,
+                "vehicle_type": vehicle.vehicle_type,
+                "vehicle_number": vehicle.vehicle_number,
+                "duration_id": duration.id,
+                "stay_duration": duration.stay_duration,
+            }
+        else:
+            raise HTTPException(status_code=404, detail="Vehicle or Duration data not found for the person.")
+    else:
+        raise HTTPException(status_code=404, detail="Person with entered ID does not exist")
 
 
 # Create executable schema instance
