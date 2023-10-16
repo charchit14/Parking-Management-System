@@ -224,6 +224,43 @@ async def search_person(person_id: int = Query(...)):
         raise HTTPException(status_code=404, detail="Person with entered ID does not exist")
 
 
+@app.delete("/delete-person")
+async def delete_person(person_id: int = Query(...)):
+
+    # Fetching the Person record to be deleted
+    person = session.query(PersonModel).filter_by(id=person_id).first()
+
+    if person:
+
+        try:
+            # Fetching the related Vehicle record
+            vehicles = session.query(VehicleModel).filter_by(person_id=person_id).all()
+
+            # Fetching the related Duration record
+            durations = session.query(DurationModel).filter_by(person_id=person_id).all()
+
+            # Deleting the Vehicle record
+            for vehicle in vehicles:
+                vehicle.person_id = None  # Set the person_id to None
+                session.delete(vehicle)
+
+            # Deleting the Duration record
+            for duration in durations:
+                session.delete(duration)
+
+            # Deleting the Person record
+            session.delete(person)
+            session.commit()
+            return {"message": "Person entry deleted successfully."}
+
+        except Exception as e:
+            session.rollback()
+            return {"error": str(e)}
+
+    else:
+        raise HTTPException(status_code=404, detail="Person with entered ID does not exist")
+
+
 # Create executable schema instance
 schema = make_executable_schema(type_def, query, mutate)
 
