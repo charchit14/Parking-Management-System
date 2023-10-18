@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>User Dashboard</title>
+    <title>User View Dashboard</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -11,6 +11,7 @@
       crossorigin="anonymous"
     />
   </head>
+
   <body>
     <br />
     <h1>
@@ -52,7 +53,7 @@
     <br />
     <br />
 
-    <!-- Add a form with the ID "search-form" and an input field for person ID -->
+    <!-- Adding a search form to enter person ID -->
     <form id="search-form" class="d-flex" role="search">
       <input
         id="person-id"
@@ -66,7 +67,7 @@
     <br />
     <br />
 
-    <!-- Display person's data in a table format with three columns -->
+    <!-- Displaying the person's data in a table format -->
     <div id="person-data" style="display: none">
       <h2><center>Person Details</center></h2>
       <br />
@@ -84,7 +85,7 @@
             <th>Stay Duration</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="person-data-body">
           <tr>
             <td id="person-id-value"></td>
             <td id="person-name-value"></td>
@@ -98,6 +99,8 @@
         </tbody>
       </table>
     </div>
+    <br />
+    <br />
 
     <script>
       document
@@ -106,32 +109,63 @@
           event.preventDefault();
           const personId = document.getElementById("person-id").value;
 
-          // Make an AJAX request to fetch person's data
-          const response = await fetch(`/search-person?person_id=${personId}`);
-          if (response.ok) {
+          try {
+            const response = await fetch("/graphql/", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify({
+                query: `
+                  query getPerson($person_id: Int!) {
+                    getPerson(id: $person_id) {
+                      user {
+                        id person_name visitor_type
+                      }
+                      vehicle {
+                        id vehicle_type vehicle_number person_id
+                      }
+                      duration {
+                        id stay_duration person_id vehicle_id
+                      }
+                    }
+                  }
+                `,
+                variables: {
+                  person_id: parseInt(personId),
+                },
+              }),
+            });
             const data = await response.json();
-            // Update the displayed data in the table
-            document.getElementById("person-id-value").textContent =
-              data.person_id;
-            document.getElementById("person-name-value").textContent =
-              data.person_name;
-            document.getElementById("visitor-type-value").textContent =
-              data.visitor_type;
-            document.getElementById("vehicle-id-value").textContent =
-              data.vehicle_id;
-            document.getElementById("vehicle-type-value").textContent =
-              data.vehicle_type;
-            document.getElementById("vehicle-number-value").textContent =
-              data.vehicle_number;
-            document.getElementById("duration-id-value").textContent =
-              data.duration_id;
-            document.getElementById("stay-duration-value").textContent =
-              data.stay_duration;
+            console.log(data);
 
-            // Show the hidden data section
-            document.getElementById("person-data").style.display = "block";
-          } else {
-            alert("Person not found"); // You can modify this to display a message on your page
+            // Check if the response contains the data
+            if (data.data && data.data.getPerson) {
+              const personData = data.data.getPerson;
+
+              // Populate the table with the retrieved data
+              document.getElementById("person-id-value").textContent = personId;
+              document.getElementById("person-name-value").textContent =
+                personData.user.person_name;
+              document.getElementById("visitor-type-value").textContent =
+                personData.user.visitor_type;
+              document.getElementById("vehicle-id-value").textContent =
+                personData.vehicle.id;
+              document.getElementById("vehicle-type-value").textContent =
+                personData.vehicle.vehicle_type;
+              document.getElementById("vehicle-number-value").textContent =
+                personData.vehicle.vehicle_number;
+              document.getElementById("duration-id-value").textContent =
+                personData.duration.id;
+              document.getElementById("stay-duration-value").textContent =
+                personData.duration.stay_duration;
+
+              // Display the table
+              document.getElementById("person-data").style.display = "block";
+            }
+          } catch (error) {
+            console.error("Error creating entry:", error);
           }
         });
     </script>
