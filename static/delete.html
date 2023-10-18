@@ -11,6 +11,7 @@
       crossorigin="anonymous"
     />
   </head>
+
   <body>
     <br />
     <h1>
@@ -46,8 +47,8 @@
         </div>
       </div>
     </nav>
-    <br>
-    <br>
+    <br />
+    <br />
 
     <!-- Adding a search form to enter person ID -->
     <form id="search-form" class="d-flex" role="search">
@@ -60,8 +61,8 @@
       />
       <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
-    <br>
-    <br>
+    <br />
+    <br />
 
     <!-- Displaying the person's data in a table format -->
     <div id="person-data" style="display: none">
@@ -99,9 +100,9 @@
     <br />
 
     <script>
-      document.getElementById("search-form").addEventListener(
-        "submit",
-        async (event) => {
+      document
+        .getElementById("search-form")
+        .addEventListener("submit", async (event) => {
           event.preventDefault();
           const personId = document.getElementById("person-id").value;
 
@@ -163,16 +164,57 @@
           } catch (error) {
             console.error("Error creating entry:", error);
           }
+        });
+
+      function deletePerson() {
+        const personId = document.getElementById("person-id").value;
+
+        // Check if the entered ID is a positive integer
+        if (!personId || isNaN(parseInt(personId)) || parseInt(personId) <= 0) {
+          alert("Please enter a valid ID.");
+          return; // Exit the function
         }
-      );
+
+        if (confirm("Are you sure you want to delete this entry?")) {
+          fetch("/graphql/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              query: `
+          mutation deletePerson($id: Int!) {
+            deletePerson(id: $id) {
+              id
+            }
+          }
+        `,
+              variables: {
+                id: parseInt(personId),
+              },
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.data && data.data.deletePerson) {
+                // Entry deleted successfully
+                alert("Entry deleted successfully.");
+                window.location.reload(); // Refresh the page
+              } else if (data.errors && data.errors.length > 0) {
+                // Handle errors, if any
+                console.error(data.errors[0].message);
+              }
+            })
+            .catch((error) => {
+              console.error("Error deleting entry:", error);
+            });
+        }
+      }
     </script>
 
     <center>
-      <button
-        type="button"
-        class="btn btn-danger"
-        onclick="redirectToUpdatingEntries()"
-      >
+      <button type="button" class="btn btn-danger" onclick="deletePerson()">
         Delete Entry
       </button>
     </center>

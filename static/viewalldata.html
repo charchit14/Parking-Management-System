@@ -1,74 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>View All Data</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
-<body>
-<br>
-<h1><center><b>Welcome To The Parking Management System</b></center></h1>
-<br>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <br />
+    <h1>
+      <center><b>Welcome To The Parking Management System</b></center>
+    </h1>
+    <br />
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
         <a class="navbar-brand"><b>Admin Dashboard</b></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="read.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="homepage.html">Logout</a>
-                </li>
-            </ul>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="read.html"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="homepage.html">Logout</a>
+            </li>
+          </ul>
         </div>
-    </div>
-</nav>
-<br>
-<br>
+      </div>
+    </nav>
+    <br />
+    <br />
 
-<!-- Add a container for the data in a table -->
-<div class="container">
-    <h2><center>Detailed Database</center></h2>
-    <br>
-    <br>
-    <table class="table table-bordered">
+    <!-- Add a container for the data in a table -->
+    <div class="container">
+      <h2><center>Detailed Database</center></h2>
+      <br />
+      <br />
+      <table class="table table-bordered">
         <thead>
-            <tr>
-                <th>Person ID</th>
-                <th>Person Name</th>
-                <th>Visitor Type</th>
-                <th>Vehicle ID</th>
-                <th>Vehicle Type</th>
-                <th>Vehicle Number</th>
-                <th>Duration ID</th>
-                <th>Stay Duration</th>
-            </tr>
+          <tr>
+            <th>Person ID</th>
+            <th>Person Name</th>
+            <th>Visitor Type</th>
+            <th>Vehicle ID</th>
+            <th>Vehicle Type</th>
+            <th>Vehicle Number</th>
+            <th>Duration ID</th>
+            <th>Stay Duration</th>
+          </tr>
         </thead>
         <tbody id="data-container"></tbody>
-    </table>
-</div>
+      </table>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-hbF5XJo9jDAfxb3z5FmimzjvvFC4p9Yjigjopu95mg1RKKs4D5F5G5lTgl5r5M6V2" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-hbF5XJo9jDAfxb3z5FmimzjvvFC4p9Yjigjopu95mg1RKKs4D5F5G5lTgl5r5M6V2"
+      crossorigin="anonymous"
+    ></script>
 
-
-<script>
-    // Function to fetch data from the GraphQL endpoint
-    async function fetchData() {
+    <script>
+      // Function to fetch data from the GraphQL endpoint
+      async function fetchData() {
         try {
-            const response = await fetch('/graphql/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    query: `
+          const response = await fetch("/graphql/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              query: `
                         {
                             getAllPeople {
                                 id
@@ -89,63 +109,73 @@
                             }
                         }
                     `,
-                }),
-            });
+            }),
+          });
 
-            const data = await response.json();
-            const { data: { getAllPeople, getAllVehicles, getAllDuration } } = data;
+          const data = await response.json();
+          const {
+            data: { getAllPeople, getAllVehicles, getAllDuration },
+          } = data;
 
-            // Populate the data-container with the retrieved data
-            const container = document.getElementById('data-container');
-            container.innerHTML = ''; // Clear any existing content
+          // Populate the data-container with the retrieved data
+          const container = document.getElementById("data-container");
+          container.innerHTML = ""; // Clear any existing content
 
-            // Create an object to store data by person ID
-            const dataByPerson = {};
+          // Create an object to store data by person ID
+          const dataByPerson = {};
 
-            // Process people data
-            getAllPeople.forEach(person => {
-                dataByPerson[person.id] = {
-                    person: person,
-                    vehicles: [],
-                    durations: [],
-                };
-            });
+          // Process people data
+          getAllPeople.forEach((person) => {
+            dataByPerson[person.id] = {
+              person: person,
+              vehicles: [],
+              durations: [],
+            };
+          });
 
-            // Process vehicle data
-            getAllVehicles.forEach(vehicle => {
-                dataByPerson[vehicle.person_id].vehicles.push(vehicle);
-            });
+          // Process vehicle data
+          getAllVehicles.forEach((vehicle) => {
+            dataByPerson[vehicle.person_id].vehicles.push(vehicle);
+          });
 
-            // Process duration data
-            getAllDuration.forEach(duration => {
-                dataByPerson[duration.person_id].durations.push(duration);
-            });
+          // Process duration data
+          getAllDuration.forEach((duration) => {
+            dataByPerson[duration.person_id].durations.push(duration);
+          });
 
-            // Display the data in the table
-            for (const personId in dataByPerson) {
-                const dataEntry = dataByPerson[personId];
-                const row = document.createElement('tr');
-                row.innerHTML = `
+          // Display the data in the table
+          for (const personId in dataByPerson) {
+            const dataEntry = dataByPerson[personId];
+            const row = document.createElement("tr");
+            row.innerHTML = `
                     <td>${dataEntry.person.id}</td>
                     <td>${dataEntry.person.person_name}</td>
                     <td>${dataEntry.person.visitor_type}</td>
-                    <td>${dataEntry.vehicles.map(vehicle => vehicle.id).join(', ')}</td>
-                    <td>${dataEntry.vehicles.map(vehicle => vehicle.vehicle_type).join(', ')}</td>
-                    <td>${dataEntry.vehicles.map(vehicle => vehicle.vehicle_number).join(', ')}</td>
-                    <td>${dataEntry.durations.map(duration => duration.id).join(', ')}</td>
-                    <td>${dataEntry.durations.map(duration => duration.stay_duration).join(', ')}</td>
+                    <td>${dataEntry.vehicles
+                      .map((vehicle) => vehicle.id)
+                      .join(", ")}</td>
+                    <td>${dataEntry.vehicles
+                      .map((vehicle) => vehicle.vehicle_type)
+                      .join(", ")}</td>
+                    <td>${dataEntry.vehicles
+                      .map((vehicle) => vehicle.vehicle_number)
+                      .join(", ")}</td>
+                    <td>${dataEntry.durations
+                      .map((duration) => duration.id)
+                      .join(", ")}</td>
+                    <td>${dataEntry.durations
+                      .map((duration) => duration.stay_duration)
+                      .join(", ")}</td>
                 `;
-                container.appendChild(row);
-            }
+            container.appendChild(row);
+          }
         } catch (error) {
-            console.error('Error fetching data:', error);
+          console.error("Error fetching data:", error);
         }
-    }
+      }
 
-    // Call the fetchData function when the page loads
-    window.onload = fetchData;
-</script>
-
-
-</body>
+      // Call the fetchData function when the page loads
+      window.onload = fetchData;
+    </script>
+  </body>
 </html>

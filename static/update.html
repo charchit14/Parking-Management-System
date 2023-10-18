@@ -99,9 +99,9 @@
     <br />
 
     <script>
-      document.getElementById("search-form").addEventListener(
-        "submit",
-        async (event) => {
+      document
+        .getElementById("search-form")
+        .addEventListener("submit", async (event) => {
           event.preventDefault();
           const personId = document.getElementById("person-id").value;
 
@@ -163,8 +163,7 @@
           } catch (error) {
             console.error("Error creating entry:", error);
           }
-        }
-      );
+        });
     </script>
 
     <center>
