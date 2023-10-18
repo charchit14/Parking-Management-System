@@ -1,9 +1,10 @@
 # About this project
-This project is a 'Parking Management System' where one can perform CRUD operations both in the backend and in the front end.
+This project is a 'Parking Management System' where one can perform CRUD operations both in the backend and in the frontend.
 This project is created using GraphQL, SQLAlchemy, PostgreSQL, Bootstrap, and FastAPI.
 
 
 ## How to run this project
+
 
 Step 1:
 Install the following packages:
@@ -30,29 +31,25 @@ typing_extensions==4.8.0
 uvicorn==0.23.2
 
 
-
 Step 2:
 Run this command in your terminal "uvicorn main:app --reload".
 You will see a link in your terminal, click on that
 
 
-
 Step 3: 
 You will be redirected to your local host
-  
-  Step 3.1
-  To interact with the backend set your address as: http://127.0.0.1:8000/graphql/
-
-  Step 3.2
-  To interact with the frontend set your address as: http://127.0.0.1:8000/static/homepage.html/
-
+    
+    Step 3.1:
+    To interact with the backend set your address as: http://127.0.0.1:8000/graphql/
+    
+    Step 3.2:
+    To interact with the frontend set your address as: http://127.0.0.1:8000/static/homepage.html/
 
 
 Step 4: 
 Now you can run the CRUD syantx for GraphQL which are given in 'GraphQL Syntax' folder 
 OR
 You can simply interact with the frontend which is more user-friendly
-
 
 
  ### NOTE: Make Sure you have PostrgreSQL installed on your computer and set your database url accordingly in 'main.py'
