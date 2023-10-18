@@ -22,9 +22,15 @@ type_def = """
         person_id: Int!
         vehicle_id: Int!
     }
-
+    
+    type UserInfo {
+        user: Person
+        vehicle: Vehicle
+        duration: Duration
+    }
+    
     type Query {
-        getPerson(id: Int!): Person
+        getPerson(id: Int!): UserInfo
         getVehicle(id: Int!): Vehicle
         getDuration(id: Int!): Duration
         getAllPeople: [Person!]!
@@ -33,7 +39,15 @@ type_def = """
     }
 
     type Mutation {
-
+        
+        addEntry(
+            person_name: String!
+            visitor_type: String!
+            vehicle_type: String!
+            vehicle_number: String!
+            stay_duration: String!
+    ) : Boolean
+        
         createPerson(
             person_name: String!
             visitor_type: String!
@@ -50,7 +64,11 @@ type_def = """
             person_id: Int!
             vehicle_id: Int!
         ): Duration
-
+        
+        updateEntry(
+        id: Int!, updates: UpdateEntry!
+        ): Boolean
+        
         updatePerson(        
         id: Int!, updates: UpdatePerson!
         ): Person
@@ -79,8 +97,16 @@ type_def = """
     input UpdateDuration{
         stay_duration: String
     }
-
+    
+    input UpdateEntry{
+        person_name: String
+        visitor_type: String
+        vehicle_type: String
+        vehicle_number: String
+        stay_duration: String
+    }
+    
 """
 
 #  : Person indicates the return type of the mutation.
-# It means that after the mutation is executed, it will return a Person object representing the updated state of the person
+# Meaning after the mutation is executed, it will return a Person object representing the updated state of the person
