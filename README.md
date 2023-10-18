@@ -30,9 +30,11 @@ typing_extensions==4.8.0
 uvicorn==0.23.2
 
 
+
 Step 2:
 Run this command in your terminal "uvicorn main:app --reload".
 You will see a link in your terminal, click on that
+
 
 
 Step 3: 
@@ -45,10 +47,12 @@ You will be redirected to your local host
   To interact with the frontend set your address as: http://127.0.0.1:8000/static/homepage.html/
 
 
+
 Step 4: 
 Now you can run the CRUD syantx for GraphQL which are given in 'GraphQL Syntax' folder 
 OR
 You can simply interact with the frontend which is more user-friendly
+
 
 
  ### NOTE: Make Sure you have PostrgreSQL installed on your computer and set your database url accordingly in 'main.py'
