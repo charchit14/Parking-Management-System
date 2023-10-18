@@ -7,6 +7,7 @@ This project is created using GraphQL, SQLAlchemy, PostgreSQL, Bootstrap, and Fa
 
 Step 1:
 Install the following packages:
+
 annotated-types==0.6.0
 anyio==3.7.1
 ariadne==0.20.1
