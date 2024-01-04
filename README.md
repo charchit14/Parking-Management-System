@@ -1,3 +1,6 @@
+# (To view the code, navigate to 'master' branch)
+<br>
+
 # About this project
 This project is a 'Parking Management System' where one can perform CRUD operations both in the backend and in the frontend.
 This project is created using GraphQL, SQLAlchemy, PostgreSQL, Bootstrap, and FastAPI.
